@@ -70,11 +70,6 @@ class Ranger
     private $escape_character = "'";
 
     /**
-     * @var IntlDateFormatter
-     */
-    private $intl;
-
-    /**
      * @var array
      */
     private $pattern_mask;
@@ -83,6 +78,16 @@ class Ranger
      * @var string
      */
     private $locale;
+
+    /**
+     * @var string
+     */
+    private $range_separator = ' - ';
+
+    /**
+     * @var string
+     */
+    private $date_time_separator = ', ';
 
     /**
      * @var int
@@ -112,7 +117,6 @@ class Ranger
         if ($format !== $this->date_format)
         {
             $this->date_format = $format;
-            $this->intl = null;
             $this->pattern_mask = array();
         }
         return $this;
@@ -127,7 +131,6 @@ class Ranger
         if ($format !== $this->time_format)
         {
             $this->time_format = $format;
-            $this->intl = null;
             $this->pattern_mask = array();
         }
         return $this;
@@ -145,6 +148,8 @@ class Ranger
         $end = new Datetime($end);
 
         $best_match = $this->find_best_match($start, $end);
+
+        $this->parse_pattern();
 
         $start_tokens = $this->tokenize($start);
         $end_tokens = $this->tokenize($end);
@@ -170,7 +175,6 @@ class Ranger
         for ($j = count($this->pattern_mask) - 1; $j + 1 > $i; $j--)
         {
             $part = $end_tokens[$j];
-
             if ($part['type'] == 'delimiter')
             {
                 $right = $part['content'] . $right;
@@ -193,7 +197,7 @@ class Ranger
             $right_middle .= $end_tokens[$k]['content'];
         }
 
-        return $left . $left_middle . ' - ' . $right_middle . $right;
+        return $left . $left_middle . $this->range_separator . $right_middle . $right;
     }
 
     /**
@@ -203,7 +207,15 @@ class Ranger
     private function tokenize(DateTime $date)
     {
         $tokens = array();
-        $formatted = $this->get_intl()->format((int) $date->format('U'));
+
+        $intl = new IntlDateFormatter($this->locale, $this->date_format, IntlDateFormatter::NONE);
+        $formatted = $intl->format((int) $date->format('U'));
+
+        if ($this->time_format !== IntlDateFormatter::NONE)
+        {
+            $intl = new IntlDateFormatter($this->locale, IntlDateFormatter::NONE, $this->time_format);
+            $formatted .= $this->date_time_separator . $intl->format((int) $date->format('U'));
+        }
 
         $type = null;
         foreach ($this->pattern_mask as $i => $part)
@@ -229,19 +241,6 @@ class Ranger
             $tokens[] =  array('type' => $type, 'content' => $formatted);
         }
         return $tokens;
-    }
-
-    /**
-     * @return IntlDateFormatter
-     */
-    private function get_intl()
-    {
-        if ($this->intl === null)
-        {
-            $this->intl = new IntlDateFormatter($this->locale, $this->date_format, $this->time_format);
-            $this->parse_pattern($this->intl->getPattern());
-        }
-        return $this->intl;
     }
 
     /**
@@ -301,12 +300,18 @@ class Ranger
     }
 
     /**
-     * @param string $pattern
      * @return array
      */
-    private function parse_pattern($pattern)
+    private function parse_pattern()
     {
-        $this->pattern_mask = array();
+        if (!empty($this->pattern_mask))
+        {
+            return;
+        }
+
+        $intl = new IntlDateFormatter($this->locale, $this->date_format, $this->time_format);
+        $pattern = $intl->getPattern();
+
         $esc_active = false;
         $part = array('content' => '', 'delimiter' => false);
         foreach (str_split($pattern) as $char)
