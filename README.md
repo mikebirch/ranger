@@ -1,4 +1,4 @@
-# Ranger
+# Ranger [![Build Status](https://travis-ci.org/flack/ranger.svg?branch=master)](https://travis-ci.org/flack/ranger)
 Ranger is a formatter for date and time ranges, based (somewhat loosely) on Adam Shaw's `formatRange` algorithm in [fullCalendar](https://github.com/fullcalendar/fullcalendar).
 
 ## Some Examples
