@@ -288,7 +288,10 @@ class Ranger
             $best_match = self::SECOND;
         }
 
-        if (   $start->format('T') !== $end->format('T')
+        //set to same time to avoid DST problems
+        $tz_end = clone $end;
+        $tz_end->setTimestamp((int) $start->format('U'));
+        if (   $start->format('T') !== $tz_end->format('T')
             || (   $this->time_format !== IntlDateFormatter::NONE
                 && $best_match < self::DAY))
         {
