@@ -92,12 +92,12 @@ class Ranger
     /**
      * @var int
      */
-    private $date_format = IntlDateFormatter::MEDIUM;
+    private $date_type = IntlDateFormatter::MEDIUM;
 
     /**
      * @var int
      */
-    private $time_format = IntlDateFormatter::NONE;
+    private $time_type = IntlDateFormatter::NONE;
 
     /**
      *
@@ -109,28 +109,28 @@ class Ranger
     }
 
     /**
-     * @param int $format
+     * @param int $type
      * @return self
      */
-    public function setDateFormat($format)
+    public function setDateType($type)
     {
-        if ($format !== $this->date_format)
+        if ($type !== $this->date_type)
         {
-            $this->date_format = $format;
+            $this->date_type = $type;
             $this->pattern_mask = array();
         }
         return $this;
     }
 
     /**
-     * @param int $format
+     * @param int $type
      * @return self
      */
-    public function setTimeFormat($format)
+    public function setTimeType($type)
     {
-        if ($format !== $this->time_format)
+        if ($type !== $this->time_type)
         {
-            $this->time_format = $format;
+            $this->time_type = $type;
             $this->pattern_mask = array();
         }
         return $this;
@@ -246,12 +246,12 @@ class Ranger
     {
         $tokens = array();
 
-        $intl = new IntlDateFormatter($this->locale, $this->date_format, IntlDateFormatter::NONE);
+        $intl = new IntlDateFormatter($this->locale, $this->date_type, IntlDateFormatter::NONE);
         $formatted = $intl->format((int) $date->format('U'));
 
-        if ($this->time_format !== IntlDateFormatter::NONE)
+        if ($this->time_type !== IntlDateFormatter::NONE)
         {
-            $intl = new IntlDateFormatter($this->locale, IntlDateFormatter::NONE, $this->time_format);
+            $intl = new IntlDateFormatter($this->locale, IntlDateFormatter::NONE, $this->time_type);
             $formatted .= $this->date_time_separator . $intl->format((int) $date->format('U'));
         }
 
@@ -329,7 +329,7 @@ class Ranger
         $tz_end = clone $end;
         $tz_end->setTimestamp((int) $start->format('U'));
         if (   $start->format('T') !== $tz_end->format('T')
-            || (   $this->time_format !== IntlDateFormatter::NONE
+            || (   $this->time_type !== IntlDateFormatter::NONE
                 && $best_match < self::DAY))
         {
             $best_match = -2;
@@ -347,7 +347,7 @@ class Ranger
             return;
         }
 
-        $intl = new IntlDateFormatter($this->locale, $this->date_format, $this->time_format);
+        $intl = new IntlDateFormatter($this->locale, $this->date_type, $this->time_type);
         $pattern = $intl->getPattern();
 
         $esc_active = false;

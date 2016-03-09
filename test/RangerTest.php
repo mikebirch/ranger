@@ -40,7 +40,7 @@ class RangerTest extends PHPUnit_Framework_TestCase
     public function testDateTimeRange($language, $start, $end, $expected)
     {
         $formatter = new Ranger($language);
-        $formatter->setTimeFormat(IntlDateFormatter::SHORT);
+        $formatter->setTimeType(IntlDateFormatter::SHORT);
         $this->assertEquals($expected, $formatter->format($start, $end));
     }
 
@@ -61,7 +61,7 @@ class RangerTest extends PHPUnit_Framework_TestCase
     public function testFullDateRange($language, $start, $end, $expected)
     {
         $formatter = new Ranger($language);
-        $formatter->setDateFormat(IntlDateFormatter::FULL);
+        $formatter->setDateType(IntlDateFormatter::FULL);
         $this->assertEquals($expected, $formatter->format($start, $end));
     }
 
