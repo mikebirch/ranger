@@ -39,9 +39,9 @@ $ranger = new Ranger('en');
 $ranger
     ->setRangeSeparator(' -- ')
     ->setDateTimeSeparator(': ')
-    ->setDateType(IntlDateFormatter::FULL)
+    ->setDateType(IntlDateFormatter::LONG)
     ->setTimeType(IntlDateFormatter::SHORT);
 
 echo $ranger->format('2013-10-05 10:00:01', '2013-10-05 13:30:00');
-// Oct 5, 2013: 10:00 AM -- 1:30 PM
+// October 5, 2013: 10:00 AM -- 1:30 PM
 ```
