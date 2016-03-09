@@ -137,6 +137,26 @@ class Ranger
     }
 
     /**
+     * @param string $separator
+     * @return self
+     */
+    public function setRangeSeparator($separator)
+    {
+        $this->range_separator = $separator;
+        return $this;
+    }
+
+    /**
+     * @param string $separator
+     * @return self
+     */
+    public function setDateTimeSeparator($separator)
+    {
+        $this->date_time_separator = $separator;
+        return $this;
+    }
+
+    /**
      *
      * @param mixed $start
      * @param mixed $end
