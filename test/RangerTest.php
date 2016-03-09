@@ -79,6 +79,27 @@ class RangerTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @dataProvider providerShortDateRange
+     */
+    public function testShortDateRange($language, $start, $end, $expected)
+    {
+        $formatter = new Ranger($language);
+        $formatter->setDateType(IntlDateFormatter::SHORT);
+        $this->assertEquals($expected, $formatter->format($start, $end));
+    }
+
+    public function providerShortDateRange()
+    {
+        return array
+        (
+            array('en', '2012-10-05', '2013-10-20', '10/5/12 – 10/20/13'),
+            array('de', '2012-10-05', '2012-10-20', '05.–20.10.12'),
+            array('de', '2012-10-05', '2012-11-20', '05.10.–20.11.12'),
+            array('de', '2012-10-05', '2013-10-20', '05.10.12 – 20.10.13')
+        );
+    }
+
     public function testCustomOptions()
     {
         $ranger = new Ranger('en');

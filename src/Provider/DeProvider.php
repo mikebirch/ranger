@@ -20,7 +20,7 @@ class DeProvider implements Provider
             $separator = ' ' . trim($separator) . ' ';
         }
         if (   $best_match == Ranger::MONTH
-            || (   $intl->getDateType() == IntlDateFormatter::MEDIUM
+            || (   $intl->getDateType() > IntlDateFormatter::LONG
                 && $best_match == Ranger::YEAR))
         {
             return '.' . $separator;
