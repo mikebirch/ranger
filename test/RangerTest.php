@@ -9,6 +9,7 @@ namespace OpenPsa\Ranger;
 
 use PHPUnit_Framework_TestCase;
 use IntlDateFormatter;
+use DateTime;
 
 class RangerTest extends PHPUnit_Framework_TestCase
 {
@@ -102,5 +103,22 @@ class RangerTest extends PHPUnit_Framework_TestCase
 
         $formatted = $ranger->format('2013-10-05 10:00:01', '2013-10-05 13:30:00');
         $this->assertEquals('October 5, 2013, between 10:00 AM and 1:30 PM', $formatted);
+    }
+
+    public function testDateTime()
+    {
+        $ranger = new Ranger('en');
+        $start = new DateTime('2013-10-05');
+        $end = new DateTime('2013-10-20');
+
+        $formatted = $ranger->format($start, $end);
+        $this->assertEquals('Oct 5–20, 2013', $formatted);
+    }
+
+    public function testTimestamp()
+    {
+        $ranger = new Ranger('en');
+        $formatted = $ranger->format(1380931200, 1382227200);
+        $this->assertEquals('Oct 5–20, 2013', $formatted);
     }
 }

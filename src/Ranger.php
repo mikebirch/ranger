@@ -10,6 +10,7 @@ namespace OpenPsa\Ranger;
 use IntlDateFormatter;
 use Datetime;
 use RuntimeException;
+use InvalidArgumentException;
 
 class Ranger
 {
@@ -164,8 +165,8 @@ class Ranger
      */
     public function format($start, $end)
     {
-        $start = new Datetime($start);
-        $end = new Datetime($end);
+        $start = $this->prepare_date($start);
+        $end = $this->prepare_date($end);
 
         $best_match = $this->find_best_match($start, $end);
 
@@ -218,6 +219,29 @@ class Ranger
         }
 
         return $left . $left_middle . $this->get_range_separator($best_match) . $right_middle . $right;
+    }
+
+    private function prepare_date($input)
+    {
+        if ($input instanceof DateTime)
+        {
+            return $input;
+        }
+        if (is_string($input))
+        {
+            return new Datetime($input);
+        }
+        if (is_int($input))
+        {
+            $date = new Datetime;
+            $date->setTimestamp($input);
+            return $date;
+        }
+        if ($input === null)
+        {
+            return new Datetime;
+        }
+        throw new InvalidArgumentException("Don't know how to handle " . gettype($input));
     }
 
     /**
