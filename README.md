@@ -38,7 +38,7 @@ use IntlDateFormatter;
 $ranger = new Ranger('en');
 $ranger
     ->setRangeSeparator(' -- ')
-    ->setDateTimeSeparator('; ')
+    ->setDateTimeSeparator(': ')
     ->setDateType(IntlDateFormatter::FULL)
     ->setTimeType(IntlDateFormatter::SHORT);
 ;
