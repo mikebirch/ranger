@@ -350,7 +350,7 @@ class Ranger
         if ($this->time_type !== IntlDateFormatter::NONE)
         {
             $intl = new IntlDateFormatter($this->locale, IntlDateFormatter::NONE, $this->time_type);
-            $pattern .= $this->date_time_separator . $intl->getPattern();
+            $pattern .= "'" . $this->date_time_separator . "'" . $intl->getPattern();
         }
 
         $esc_active = false;
@@ -362,18 +362,19 @@ class Ranger
             {
                 if ($esc_active)
                 {
-                    $escape_active = false;
+                    $esc_active = false;
                     if ($part['content'] === '')
                     {
                         //Literal '
                         $part['content'] = $char;
                     }
+
                     $this->push_to_mask($part);
                     $part = array('content' => '', 'delimiter' => false);
                 }
                 else
                 {
-                    $escape_active = true;
+                    $esc_active = true;
                     $this->push_to_mask($part);
                     $part = array('content' => '', 'delimiter' => true);
                 }
