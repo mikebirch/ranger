@@ -8,7 +8,7 @@
 namespace OpenPsa\Ranger;
 
 use IntlDateFormatter;
-use Datetime;
+use DateTime;
 use RuntimeException;
 use InvalidArgumentException;
 
