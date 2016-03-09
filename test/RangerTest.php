@@ -54,4 +54,28 @@ class RangerTest extends PHPUnit_Framework_TestCase
             array('de', '2013-10-05 10:00:01', '2013-10-05 13:30:00', '05.10.2013, 10:00 - 13:30'),
         );
     }
+
+    /**
+     * @dataProvider providerFullDateRange
+     */
+    public function testFullDateRange($language, $start, $end, $expected)
+    {
+        $formatter = new Ranger($language);
+        $formatter->setDateFormat(IntlDateFormatter::FULL);
+        $this->assertEquals($expected, $formatter->format($start, $end));
+    }
+
+    public function providerFullDateRange()
+    {
+        return array
+        (
+            array('en', '2013-10-05', '2013-10-20', 'Saturday, October 5 - Sunday, October 20, 2013'),
+            array('en', '2013-10-05', '2013-11-20', 'Saturday, October 5 - Wednesday, November 20, 2013'),
+            array('en', '2012-10-05', '2013-10-20', 'Friday, October 5, 2012 - Sunday, October 20, 2013'),
+            array('de', '2012-10-05', '2012-10-20', 'Freitag, 5. - Samstag, 20. Oktober 2012'),
+            array('de', '2012-10-05', '2012-11-20', 'Freitag, 5. Oktober - Dienstag, 20. November 2012'),
+            array('de', '2012-10-05', '2013-10-20', 'Freitag, 5. Oktober 2012 - Sonntag, 20. Oktober 2013')
+        );
+    }
+
 }

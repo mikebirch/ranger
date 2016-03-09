@@ -13,9 +13,9 @@ class DeProvider implements Provider
 {
     public function modifySeparator(IntlDateFormatter $intl, $best_match, $separator)
     {
-        if (   $intl->getDateType() == IntlDateFormatter::MEDIUM
-            && (   $best_match == Ranger::YEAR
-                || $best_match == Ranger::MONTH))
+        if (   $best_match == Ranger::MONTH
+            || (   $intl->getDateType() == IntlDateFormatter::MEDIUM
+                && $best_match == Ranger::YEAR))
         {
             return '.' . $separator;
         }
