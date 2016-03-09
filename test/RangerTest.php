@@ -84,10 +84,10 @@ class RangerTest extends PHPUnit_Framework_TestCase
         $ranger
             ->setRangeSeparator(' -- ')
             ->setDateTimeSeparator(': ')
-            ->setDateType(IntlDateFormatter::MEDIUM)
+            ->setDateType(IntlDateFormatter::LONG)
             ->setTimeType(IntlDateFormatter::SHORT);
 
         $formatted = $ranger->format('2013-10-05 10:00:01', '2013-10-05 13:30:00');
-        $this->assertEquals('Oct 5, 2013: 10:00 AM -- 1:30 PM', $formatted);
+        $this->assertEquals('October 5, 2013: 10:00 AM -- 1:30 PM', $formatted);
     }
 }
