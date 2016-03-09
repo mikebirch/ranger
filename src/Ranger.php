@@ -169,7 +169,7 @@ class Ranger
 
         $best_match = $this->find_best_match($start, $end);
 
-        $intl = $this->parse_pattern();
+        $this->parse_pattern();
 
         $start_tokens = $this->tokenize($start);
         $end_tokens = $this->tokenize($end);
@@ -217,21 +217,21 @@ class Ranger
             $right_middle .= $end_tokens[$k]['content'];
         }
 
-        return $left . $left_middle . $this->get_range_separator($intl, $best_match) . $right_middle . $right;
+        return $left . $left_middle . $this->get_range_separator($best_match) . $right_middle . $right;
     }
 
     /**
-     *
-     * @param IntlDateFormatter $intl
      * @param int $best_match
      */
-    private function get_range_separator(IntlDateFormatter $intl, $best_match)
+    private function get_range_separator($best_match)
     {
         $provider_class = 'OpenPsa\\Ranger\\Provider\\' . ucfirst(substr($this->locale, 0, 2)) . 'Provider';
 
         if (class_exists($provider_class))
         {
             $provider = new $provider_class();
+            $intl = new IntlDateFormatter($this->locale, $this->date_type, $this->time_type);
+
             return $provider->modifySeparator($intl, $best_match, $this->range_separator);
         }
 
@@ -337,9 +337,6 @@ class Ranger
         return $best_match;
     }
 
-    /**
-     * @return IntlDateFormatter
-     */
     private function parse_pattern()
     {
         if (!empty($this->pattern_mask))
@@ -347,8 +344,14 @@ class Ranger
             return;
         }
 
-        $intl = new IntlDateFormatter($this->locale, $this->date_type, $this->time_type);
+        $intl = new IntlDateFormatter($this->locale, $this->date_type, IntlDateFormatter::NONE);
         $pattern = $intl->getPattern();
+
+        if ($this->time_type !== IntlDateFormatter::NONE)
+        {
+            $intl = new IntlDateFormatter($this->locale, IntlDateFormatter::NONE, $this->time_type);
+            $pattern .= $this->date_time_separator . $intl->getPattern();
+        }
 
         $esc_active = false;
         $part = array('content' => '', 'delimiter' => false);
@@ -410,7 +413,6 @@ class Ranger
             }
         }
         $this->push_to_mask($part);
-        return $intl;
     }
 
     /**
