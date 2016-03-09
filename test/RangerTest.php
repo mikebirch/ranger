@@ -25,12 +25,12 @@ class RangerTest extends PHPUnit_Framework_TestCase
     {
         return array
         (
-            array('en', '2013-10-05', '2013-10-20', 'Oct 5 - 20, 2013'),
-            array('en', '2013-10-05', '2013-11-20', 'Oct 5 - Nov 20, 2013'),
-            array('en', '2012-10-05', '2013-10-20', 'Oct 5, 2012 - Oct 20, 2013'),
-            array('de', '2012-10-05', '2012-10-20', '05. - 20.10.2012'),
-            array('de', '2012-10-05', '2012-11-20', '05.10. - 20.11.2012'),
-            array('de', '2012-10-05', '2013-10-20', '05.10.2012 - 20.10.2013')
+            array('en', '2013-10-05', '2013-10-20', 'Oct 5–20, 2013'),
+            array('en', '2013-10-05', '2013-11-20', 'Oct 5 – Nov 20, 2013'),
+            array('en', '2012-10-05', '2013-10-20', 'Oct 5, 2012 – Oct 20, 2013'),
+            array('de', '2012-10-05', '2012-10-20', '05.–20.10.2012'),
+            array('de', '2012-10-05', '2012-11-20', '05.10.–20.11.2012'),
+            array('de', '2012-10-05', '2013-10-20', '05.10.2012 – 20.10.2013')
         );
     }
 
@@ -48,10 +48,10 @@ class RangerTest extends PHPUnit_Framework_TestCase
     {
         return array
         (
-            array('en', '2013-10-05 01:01:01', '2013-10-20 00:00:00', 'Oct 5, 2013, 1:01 AM - Oct 20, 2013, 12:00 AM'),
-            array('en', '2013-10-05 10:00:01', '2013-10-05 13:30:00', 'Oct 5, 2013, 10:00 AM - 1:30 PM'),
-            array('de', '2013-10-05 01:01:01', '2013-10-20 00:00:00', '05.10.2013, 01:01 - 20.10.2013, 00:00'),
-            array('de', '2013-10-05 10:00:01', '2013-10-05 13:30:00', '05.10.2013, 10:00 - 13:30'),
+            array('en', '2013-10-05 01:01:01', '2013-10-20 00:00:00', 'Oct 5, 2013, 1:01 AM – Oct 20, 2013, 12:00 AM'),
+            array('en', '2013-10-05 10:00:01', '2013-10-05 13:30:00', 'Oct 5, 2013, 10:00 AM – 1:30 PM'),
+            array('de', '2013-10-05 01:01:01', '2013-10-20 00:00:00', '05.10.2013, 01:01 – 20.10.2013, 00:00'),
+            array('de', '2013-10-05 10:00:01', '2013-10-05 13:30:00', '05.10.2013, 10:00 – 13:30'),
         );
     }
 
@@ -69,12 +69,12 @@ class RangerTest extends PHPUnit_Framework_TestCase
     {
         return array
         (
-            array('en', '2013-10-05', '2013-10-20', 'Saturday, October 5 - Sunday, October 20, 2013'),
-            array('en', '2013-10-05', '2013-11-20', 'Saturday, October 5 - Wednesday, November 20, 2013'),
-            array('en', '2012-10-05', '2013-10-20', 'Friday, October 5, 2012 - Sunday, October 20, 2013'),
-            array('de', '2012-10-05', '2012-10-20', 'Freitag, 5. - Samstag, 20. Oktober 2012'),
-            array('de', '2012-10-05', '2012-11-20', 'Freitag, 5. Oktober - Dienstag, 20. November 2012'),
-            array('de', '2012-10-05', '2013-10-20', 'Freitag, 5. Oktober 2012 - Sonntag, 20. Oktober 2013')
+            array('en', '2013-10-05', '2013-10-20', 'Saturday, October 5 – Sunday, October 20, 2013'),
+            array('en', '2013-10-05', '2013-11-20', 'Saturday, October 5 – Wednesday, November 20, 2013'),
+            array('en', '2012-10-05', '2013-10-20', 'Friday, October 5, 2012 – Sunday, October 20, 2013'),
+            array('de', '2012-10-05', '2012-10-20', 'Freitag, 5. – Samstag, 20. Oktober 2012'),
+            array('de', '2012-10-05', '2012-11-20', 'Freitag, 5. Oktober – Dienstag, 20. November 2012'),
+            array('de', '2012-10-05', '2013-10-20', 'Freitag, 5. Oktober 2012 – Sonntag, 20. Oktober 2013')
         );
     }
 

@@ -9,21 +9,14 @@ namespace OpenPsa\Ranger\Provider;
 use OpenPsa\Ranger\Ranger;
 use IntlDateFormatter;
 
-class DeProvider implements Provider
+class DefaultProvider implements Provider
 {
     public function modifySeparator(IntlDateFormatter $intl, $best_match, $separator)
     {
-        if (   $best_match < Ranger::YEAR
-            || $best_match > Ranger::MONTH
+        if (   $best_match != Ranger::MONTH
             || $intl->getDateType() < IntlDateFormatter::MEDIUM)
         {
-            $separator = ' ' . trim($separator) . ' ';
-        }
-        if (   $best_match == Ranger::MONTH
-            || (   $intl->getDateType() == IntlDateFormatter::MEDIUM
-                && $best_match == Ranger::YEAR))
-        {
-            return '.' . $separator;
+            return ' ' . trim($separator) . ' ';
         }
         return $separator;
     }

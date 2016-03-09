@@ -82,7 +82,7 @@ class Ranger
     /**
      * @var string
      */
-    private $range_separator = ' - ';
+    private $range_separator = '–';
 
     /**
      * @var string
@@ -227,15 +227,14 @@ class Ranger
     {
         $provider_class = 'OpenPsa\\Ranger\\Provider\\' . ucfirst(substr($this->locale, 0, 2)) . 'Provider';
 
-        if (class_exists($provider_class))
+        if (!class_exists($provider_class))
         {
-            $provider = new $provider_class();
-            $intl = new IntlDateFormatter($this->locale, $this->date_type, $this->time_type);
-
-            return $provider->modifySeparator($intl, $best_match, $this->range_separator);
+            $provider_class = 'OpenPsa\\Ranger\\Provider\\DefaultProvider';
         }
+        $provider = new $provider_class();
+        $intl = new IntlDateFormatter($this->locale, $this->date_type, $this->time_type);
 
-        return $this->range_separator;
+        return $provider->modifySeparator($intl, $best_match, $this->range_separator);
     }
 
     /**
