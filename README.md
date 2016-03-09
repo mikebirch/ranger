@@ -29,7 +29,7 @@ echo $ranger->format('2013-10-05', '2013-11-20');
 
 To use Ranger in any other locale than `"en"`, you will need to have the [`php-intl`](http://php.net/manual/en/book.intl.php) extension installed.
 
-### Options
+### Customization
 
 ```php
 use OpenPsa\Ranger\Ranger;
