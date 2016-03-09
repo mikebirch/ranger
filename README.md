@@ -24,3 +24,24 @@ echo $ranger->format('2013-10-05', '2013-10-20');
 echo $ranger->format('2013-10-05', '2013-11-20');
 // 05.10. - 20.11.2013
 ```
+
+## Usage
+
+To use Ranger in any other locale than `"en"`, you will need to have the [`php-intl`](http://php.net/manual/en/book.intl.php) extension installed.
+
+### Options
+
+```php
+use OpenPsa\Ranger\Ranger;
+use IntlDateFormatter;
+
+$ranger = new Ranger('en');
+$ranger
+    ->setRangeSeparator(' -- ')
+    ->setDateTimeSeparator('; ')
+    ->setDateType(IntlDateFormatter::FULL)
+    ->setTimeType(IntlDateFormatter::SHORT);
+;
+echo $ranger->format('2013-10-05 10:00:01', '2013-10-05 13:30:00');
+// Oct 5, 2013: 10:00 AM -- 1:30 PM
+```
