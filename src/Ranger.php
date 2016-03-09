@@ -149,7 +149,7 @@ class Ranger
 
         $best_match = $this->find_best_match($start, $end);
 
-        $this->parse_pattern();
+        $intl = $this->parse_pattern();
 
         $start_tokens = $this->tokenize($start);
         $end_tokens = $this->tokenize($end);
@@ -197,7 +197,25 @@ class Ranger
             $right_middle .= $end_tokens[$k]['content'];
         }
 
-        return $left . $left_middle . $this->range_separator . $right_middle . $right;
+        return $left . $left_middle . $this->get_range_separator($intl, $best_match) . $right_middle . $right;
+    }
+
+    /**
+     *
+     * @param IntlDateFormatter $intl
+     * @param int $best_match
+     */
+    private function get_range_separator(IntlDateFormatter $intl, $best_match)
+    {
+        $provider_class = 'OpenPsa\\Ranger\\Provider\\' . ucfirst(substr($this->locale, 0, 2)) . 'Provider';
+
+        if (class_exists($provider_class))
+        {
+            $provider = new $provider_class();
+            return $provider->modifySeparator($intl, $best_match, $this->range_separator);
+        }
+
+        return $this->range_separator;
     }
 
     /**
@@ -300,7 +318,7 @@ class Ranger
     }
 
     /**
-     * @return array
+     * @return IntlDateFormatter
      */
     private function parse_pattern()
     {
@@ -372,6 +390,7 @@ class Ranger
             }
         }
         $this->push_to_mask($part);
+        return $intl;
     }
 
     /**
