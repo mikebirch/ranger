@@ -146,7 +146,10 @@ class RangerTest extends PHPUnit_Framework_TestCase
     public function testTimestampTimezone()
     {
         $backup = date_default_timezone_get();
-        date_default_timezone_set('Europe/Berlin');
+        if (!date_default_timezone_set('Europe/Berlin'))
+        {
+            $this->markTestSkipped("Couldn't set timezone");
+        }
         $ranger = new Ranger('de');
         $ranger->setTimeType(IntlDateFormatter::SHORT);
         $formatted = $ranger->format(1457478001, 1457481600);
