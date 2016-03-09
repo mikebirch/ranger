@@ -8,21 +8,21 @@ use OpenPsa\Ranger\Ranger;
 
 $ranger = new Ranger('en');
 echo $ranger->format('2013-10-05', '2013-10-20');
-// Oct 5 - 20, 2013
+// Oct 5–20, 2013
 echo $ranger->format('2013-10-05', '2013-11-20');
-// Oct 5 - Nov 20, 2013
+// Oct 5 – Nov 20, 2013
 
 $ranger = new Ranger('en_GB');
 echo $ranger->format('2013-10-05', '2013-10-20');
-// 5 - 20 Oct 2013
+// 5–20 Oct 2013
 echo $ranger->format('2013-10-05', '2013-11-20');
-// 5 Oct - 20 Nov 2013
+// 5 Oct – 20 Nov 2013
 
 $ranger = new Ranger('de');
 echo $ranger->format('2013-10-05', '2013-10-20');
-// 05. - 20.10.2013
+// 05.–20.10.2013
 echo $ranger->format('2013-10-05', '2013-11-20');
-// 05.10. - 20.11.2013
+// 05.10.–20.11.2013
 ```
 
 ## Usage
