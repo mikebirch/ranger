@@ -184,6 +184,11 @@ class Ranger
             }
         }
 
+        if ($best_match == self::SECOND) {
+            // the given dates are identical (for all pratical purposes)
+            return $left;
+        }
+
         $right = '';
         for ($j = count($this->pattern_mask) - 1; $j + 1 > $i; $j--) {
             $part = $end_tokens[$j];
@@ -207,6 +212,11 @@ class Ranger
         return $left . $left_middle . $this->get_range_separator($best_match) . $right_middle . $right;
     }
 
+    /**
+     * @param mixed $input
+     * @throws InvalidArgumentException
+     * @return \DateTime
+     */
     private function prepare_date($input)
     {
         if ($input instanceof DateTime) {
