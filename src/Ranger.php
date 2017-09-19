@@ -26,7 +26,7 @@ class Ranger
     const SECOND = 9;
     const TIMEZONE = -1;
 
-    private $pattern_characters = array(
+    private $pattern_characters = [
         'G' => self::ERA,
         'y' => self::YEAR,
         'Y' => self::YEAR,
@@ -62,7 +62,7 @@ class Ranger
         'V' => self::TIMEZONE,
         'X' => self::TIMEZONE,
         'x' => self::TIMEZONE
-    );
+    ];
 
     /**
      * @var string
@@ -116,7 +116,7 @@ class Ranger
     {
         if ($type !== $this->date_type) {
             $this->date_type = $type;
-            $this->pattern_mask = array();
+            $this->pattern_mask = [];
         }
         return $this;
     }
@@ -129,7 +129,7 @@ class Ranger
     {
         if ($type !== $this->time_type) {
             $this->time_type = $type;
-            $this->pattern_mask = array();
+            $this->pattern_mask = [];
         }
         return $this;
     }
@@ -249,7 +249,7 @@ class Ranger
      */
     private function tokenize(DateTime $date)
     {
-        $tokens = array();
+        $tokens = [];
 
         $intl = new IntlDateFormatter($this->locale, $this->date_type, IntlDateFormatter::NONE, $date->getTimezone()->getName());
         $formatted = $intl->format((int) $date->format('U'));
@@ -265,16 +265,16 @@ class Ranger
                 $parts = explode($part['content'], $formatted, 2);
 
                 if (count($parts) == 2) {
-                    $tokens[] = array('type' => $type, 'content' => $parts[0]);
+                    $tokens[] = ['type' => $type, 'content' => $parts[0]];
                     $formatted = $parts[1];
                 }
-                $tokens[] = array('type' => 'delimiter', 'content' => $part['content']);
+                $tokens[] = ['type' => 'delimiter', 'content' => $part['content']];
             } else {
                 $type = $part['content'];
             }
         }
         if (!$part['delimiter']) {
-            $tokens[] =  array('type' => $type, 'content' => $formatted);
+            $tokens[] =  ['type' => $type, 'content' => $formatted];
         }
         return $tokens;
     }
@@ -334,7 +334,7 @@ class Ranger
         }
 
         $esc_active = false;
-        $part = array('content' => '', 'delimiter' => false);
+        $part = ['content' => '', 'delimiter' => false];
         foreach (str_split($pattern) as $char) {
             //@todo the esc char handling is untested
             if ($char == $this->escape_character) {
@@ -346,25 +346,25 @@ class Ranger
                     }
 
                     $this->push_to_mask($part);
-                    $part = array('content' => '', 'delimiter' => false);
+                    $part = ['content' => '', 'delimiter' => false];
                 } else {
                     $esc_active = true;
                     $this->push_to_mask($part);
-                    $part = array('content' => '', 'delimiter' => true);
+                    $part = ['content' => '', 'delimiter' => true];
                 }
             } elseif ($esc_active) {
                 $part['content'] .= $char;
             } elseif (!array_key_exists($char, $this->pattern_characters)) {
                 if ($part['delimiter'] === false) {
                     $this->push_to_mask($part);
-                    $part = array('content' => $char, 'delimiter' => true);
+                    $part = ['content' => $char, 'delimiter' => true];
                 } else {
                     $part['content'] .= $char;
                 }
             } else {
                 if ($part['delimiter'] === true) {
                     $this->push_to_mask($part);
-                    $part = array('content' => $this->pattern_characters[$char], 'delimiter' => false);
+                    $part = ['content' => $this->pattern_characters[$char], 'delimiter' => false];
                 } else {
                     if (   $part['content'] !== ''
                         && $part['content'] !== $this->pattern_characters[$char]) {
