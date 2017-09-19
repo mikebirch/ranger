@@ -15,14 +15,12 @@ class DeProvider implements Provider
     {
         if (   $best_match < Ranger::YEAR
             || $best_match > Ranger::MONTH
-            || $intl->getDateType() < IntlDateFormatter::MEDIUM)
-        {
+            || $intl->getDateType() < IntlDateFormatter::MEDIUM) {
             $separator = ' ' . trim($separator) . ' ';
         }
         if (   $best_match == Ranger::MONTH
             || (   $intl->getDateType() > IntlDateFormatter::LONG
-                && $best_match == Ranger::YEAR))
-        {
+                && $best_match == Ranger::YEAR)) {
             return '.' . $separator;
         }
         return $separator;

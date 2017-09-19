@@ -26,8 +26,7 @@ class Ranger
     const SECOND = 9;
     const TIMEZONE = -1;
 
-    private $pattern_characters = array
-    (
+    private $pattern_characters = array(
         'G' => self::ERA,
         'y' => self::YEAR,
         'Y' => self::YEAR,
@@ -115,8 +114,7 @@ class Ranger
      */
     public function setDateType($type)
     {
-        if ($type !== $this->date_type)
-        {
+        if ($type !== $this->date_type) {
             $this->date_type = $type;
             $this->pattern_mask = array();
         }
@@ -129,8 +127,7 @@ class Ranger
      */
     public function setTimeType($type)
     {
-        if ($type !== $this->time_type)
-        {
+        if ($type !== $this->time_type) {
             $this->time_type = $type;
             $this->pattern_mask = array();
         }
@@ -176,16 +173,11 @@ class Ranger
         $end_tokens = $this->tokenize($end);
 
         $left = '';
-        foreach ($this->pattern_mask as $i => $part)
-        {
-            if ($part['delimiter'])
-            {
+        foreach ($this->pattern_mask as $i => $part) {
+            if ($part['delimiter']) {
                 $left .= $part['content'];
-            }
-            else
-            {
-                if ($part['content'] > $best_match)
-                {
+            } else {
+                if ($part['content'] > $best_match) {
                     break;
                 }
                 $left .= $start_tokens[$i]['content'];
@@ -193,17 +185,12 @@ class Ranger
         }
 
         $right = '';
-        for ($j = count($this->pattern_mask) - 1; $j + 1 > $i; $j--)
-        {
+        for ($j = count($this->pattern_mask) - 1; $j + 1 > $i; $j--) {
             $part = $end_tokens[$j];
-            if ($part['type'] == 'delimiter')
-            {
+            if ($part['type'] == 'delimiter') {
                 $right = $part['content'] . $right;
-            }
-            else
-            {
-                if ($part['type'] > $best_match)
-                {
+            } else {
+                if ($part['type'] > $best_match) {
                     break;
                 }
                 $right = $part['content'] . $right;
@@ -212,8 +199,7 @@ class Ranger
 
         $left_middle = '';
         $right_middle = '';
-        for ($k = $i; $k <= $j; $k++)
-        {
+        for ($k = $i; $k <= $j; $k++) {
             $left_middle .= $start_tokens[$k]['content'];
             $right_middle .= $end_tokens[$k]['content'];
         }
@@ -223,22 +209,18 @@ class Ranger
 
     private function prepare_date($input)
     {
-        if ($input instanceof DateTime)
-        {
+        if ($input instanceof DateTime) {
             return $input;
         }
-        if (is_string($input))
-        {
+        if (is_string($input)) {
             return new Datetime($input);
         }
-        if (is_int($input))
-        {
+        if (is_int($input)) {
             $date = new Datetime;
             $date->setTimestamp($input);
             return $date;
         }
-        if ($input === null)
-        {
+        if ($input === null) {
             return new Datetime;
         }
         throw new InvalidArgumentException("Don't know how to handle " . gettype($input));
@@ -253,8 +235,7 @@ class Ranger
 
         $provider_class = 'OpenPsa\\Ranger\\Provider\\' . ucfirst(substr($intl->getLocale(), 0, 2)) . 'Provider';
 
-        if (!class_exists($provider_class))
-        {
+        if (!class_exists($provider_class)) {
             $provider_class = 'OpenPsa\\Ranger\\Provider\\DefaultProvider';
         }
         $provider = new $provider_class();
@@ -273,33 +254,26 @@ class Ranger
         $intl = new IntlDateFormatter($this->locale, $this->date_type, IntlDateFormatter::NONE, $date->getTimezone()->getName());
         $formatted = $intl->format((int) $date->format('U'));
 
-        if ($this->time_type !== IntlDateFormatter::NONE)
-        {
+        if ($this->time_type !== IntlDateFormatter::NONE) {
             $intl = new IntlDateFormatter($this->locale, IntlDateFormatter::NONE, $this->time_type, $date->getTimezone()->getName());
             $formatted .= $this->date_time_separator . $intl->format((int) $date->format('U'));
         }
 
         $type = null;
-        foreach ($this->pattern_mask as $i => $part)
-        {
-            if ($part['delimiter'])
-            {
+        foreach ($this->pattern_mask as $i => $part) {
+            if ($part['delimiter']) {
                 $parts = explode($part['content'], $formatted, 2);
 
-                if (count($parts) == 2)
-                {
+                if (count($parts) == 2) {
                     $tokens[] = array('type' => $type, 'content' => $parts[0]);
                     $formatted = $parts[1];
                 }
                 $tokens[] = array('type' => 'delimiter', 'content' => $part['content']);
-            }
-            else
-            {
+            } else {
                 $type = $part['content'];
             }
         }
-        if (!$part['delimiter'])
-        {
+        if (!$part['delimiter']) {
             $tokens[] =  array('type' => $type, 'content' => $formatted);
         }
         return $tokens;
@@ -314,38 +288,23 @@ class Ranger
     private function find_best_match(DateTime $start, DateTime $end)
     {
         $best_match = -2;
-        if ($start->format('Y') !== $end->format('Y'))
-        {
+        if ($start->format('Y') !== $end->format('Y')) {
             $best_match = self::TIMEZONE;
-        }
-        else if ($start->format('m') !== $end->format('m'))
-        {
+        } elseif ($start->format('m') !== $end->format('m')) {
             $best_match = self::YEAR;
-        }
-        else if ($start->format('d') !== $end->format('d'))
-        {
+        } elseif ($start->format('d') !== $end->format('d')) {
             $best_match = self::MONTH;
-        }
-        else if ($start->format('a') !== $end->format('a'))
-        {
+        } elseif ($start->format('a') !== $end->format('a')) {
             $best_match = self::DAY;
-        }
-        else if ($start->format('H') !== $end->format('H'))
-        {
+        } elseif ($start->format('H') !== $end->format('H')) {
             $best_match = self::AM;
-        }
-        else if ($start->format('i') !== $end->format('i'))
-        {
+        } elseif ($start->format('i') !== $end->format('i')) {
             //it makes no sense to display something like 10:00:00 - 30:00...
             $best_match = self::AM;
-        }
-        else if ($start->format('s') !== $end->format('s'))
-        {
+        } elseif ($start->format('s') !== $end->format('s')) {
             //it makes no sense to display something like 10:00:00 - 30:00...
             $best_match = self::AM;
-        }
-        else
-        {
+        } else {
             $best_match = self::SECOND;
         }
 
@@ -354,8 +313,7 @@ class Ranger
         $tz_end->setTimestamp((int) $start->format('U'));
         if (   $start->format('T') !== $tz_end->format('T')
             || (   $this->time_type !== IntlDateFormatter::NONE
-                && $best_match < self::DAY))
-        {
+                && $best_match < self::DAY)) {
             $best_match = -2;
         }
         return $best_match;
@@ -363,74 +321,53 @@ class Ranger
 
     private function parse_pattern()
     {
-        if (!empty($this->pattern_mask))
-        {
+        if (!empty($this->pattern_mask)) {
             return;
         }
 
         $intl = new IntlDateFormatter($this->locale, $this->date_type, IntlDateFormatter::NONE);
         $pattern = $intl->getPattern();
 
-        if ($this->time_type !== IntlDateFormatter::NONE)
-        {
+        if ($this->time_type !== IntlDateFormatter::NONE) {
             $intl = new IntlDateFormatter($this->locale, IntlDateFormatter::NONE, $this->time_type);
             $pattern .= "'" . $this->date_time_separator . "'" . $intl->getPattern();
         }
 
         $esc_active = false;
         $part = array('content' => '', 'delimiter' => false);
-        foreach (str_split($pattern) as $char)
-        {
+        foreach (str_split($pattern) as $char) {
             //@todo the esc char handling is untested
-            if ($char == $this->escape_character)
-            {
-                if ($esc_active)
-                {
+            if ($char == $this->escape_character) {
+                if ($esc_active) {
                     $esc_active = false;
-                    if ($part['content'] === '')
-                    {
+                    if ($part['content'] === '') {
                         //Literal '
                         $part['content'] = $char;
                     }
 
                     $this->push_to_mask($part);
                     $part = array('content' => '', 'delimiter' => false);
-                }
-                else
-                {
+                } else {
                     $esc_active = true;
                     $this->push_to_mask($part);
                     $part = array('content' => '', 'delimiter' => true);
                 }
-            }
-            else if ($esc_active)
-            {
+            } elseif ($esc_active) {
                 $part['content'] .= $char;
-            }
-            else if (!array_key_exists($char, $this->pattern_characters))
-            {
-                if ($part['delimiter'] === false)
-                {
+            } elseif (!array_key_exists($char, $this->pattern_characters)) {
+                if ($part['delimiter'] === false) {
                     $this->push_to_mask($part);
                     $part = array('content' => $char, 'delimiter' => true);
-                }
-                else
-                {
+                } else {
                     $part['content'] .= $char;
                 }
-            }
-            else
-            {
-                if ($part['delimiter'] === true)
-                {
+            } else {
+                if ($part['delimiter'] === true) {
                     $this->push_to_mask($part);
                     $part = array('content' => $this->pattern_characters[$char], 'delimiter' => false);
-                }
-                else
-                {
+                } else {
                     if (   $part['content'] !== ''
-                        && $part['content'] !== $this->pattern_characters[$char])
-                    {
+                        && $part['content'] !== $this->pattern_characters[$char]) {
                         throw new RuntimeException('missing separator between date parts');
                     }
                     $part['content'] = $this->pattern_characters[$char];
@@ -445,8 +382,7 @@ class Ranger
      */
     private function push_to_mask(array $part)
     {
-        if ($part['content'] !== '')
-        {
+        if ($part['content'] !== '') {
             $this->pattern_mask[] = $part;
         }
     }

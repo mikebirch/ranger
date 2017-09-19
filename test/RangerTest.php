@@ -24,8 +24,7 @@ class RangerTest extends PHPUnit_Framework_TestCase
 
     public function providerDateRange()
     {
-        return array
-        (
+        return array(
             array('en', '2013-10-05', '2013-10-20', 'Oct 5–20, 2013'),
             array('en', '2013-10-05', '2013-11-20', 'Oct 5 – Nov 20, 2013'),
             array('en', '2012-10-05', '2013-10-20', 'Oct 5, 2012 – Oct 20, 2013'),
@@ -47,8 +46,7 @@ class RangerTest extends PHPUnit_Framework_TestCase
 
     public function providerDateTimeRange()
     {
-        return array
-        (
+        return array(
             array('en', '2013-10-05 01:01:01', '2013-10-20 00:00:00', 'Oct 5, 2013, 1:01 AM – Oct 20, 2013, 12:00 AM'),
             array('en', '2013-10-05 10:00:01', '2013-10-05 13:30:00', 'Oct 5, 2013, 10:00 AM – 1:30 PM'),
             array('de', '2013-10-05 01:01:01', '2013-10-20 00:00:00', '05.10.2013, 01:01 – 20.10.2013, 00:00'),
@@ -68,8 +66,7 @@ class RangerTest extends PHPUnit_Framework_TestCase
 
     public function providerFullDateRange()
     {
-        return array
-        (
+        return array(
             array('en', '2013-10-05', '2013-10-20', 'Saturday, October 5 – Sunday, October 20, 2013'),
             array('en', '2013-10-05', '2013-11-20', 'Saturday, October 5 – Wednesday, November 20, 2013'),
             array('en', '2012-10-05', '2013-10-20', 'Friday, October 5, 2012 – Sunday, October 20, 2013'),
@@ -91,8 +88,7 @@ class RangerTest extends PHPUnit_Framework_TestCase
 
     public function providerShortDateRange()
     {
-        return array
-        (
+        return array(
             array('en', '2012-10-05', '2013-10-20', '10/5/12 – 10/20/13'),
             array('de', '2012-10-05', '2012-10-20', '05.–20.10.12'),
             array('de', '2012-10-05', '2012-11-20', '05.10.–20.11.12'),
@@ -146,8 +142,7 @@ class RangerTest extends PHPUnit_Framework_TestCase
     public function testTimestampTimezone()
     {
         $backup = date_default_timezone_get();
-        if (!date_default_timezone_set('Europe/Berlin'))
-        {
+        if (!date_default_timezone_set('Europe/Berlin')) {
             $this->markTestSkipped("Couldn't set timezone");
         }
         $ranger = new Ranger('de');

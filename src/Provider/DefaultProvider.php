@@ -14,8 +14,7 @@ class DefaultProvider implements Provider
     public function modifySeparator(IntlDateFormatter $intl, $best_match, $separator)
     {
         if (   $best_match != Ranger::MONTH
-            || $intl->getDateType() < IntlDateFormatter::MEDIUM)
-        {
+            || $intl->getDateType() < IntlDateFormatter::MEDIUM) {
             return ' ' . trim($separator) . ' ';
         }
         return $separator;
