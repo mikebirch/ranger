@@ -75,6 +75,11 @@ class Ranger
     private $pattern_mask;
 
     /**
+     * @var int
+     */
+    private $precision;
+
+    /**
      * @var string
      */
     private $locale;
@@ -117,6 +122,7 @@ class Ranger
         if ($type !== $this->date_type) {
             $this->date_type = $type;
             $this->pattern_mask = [];
+            $this->precision = 0;
         }
         return $this;
     }
@@ -130,6 +136,7 @@ class Ranger
         if ($type !== $this->time_type) {
             $this->time_type = $type;
             $this->pattern_mask = [];
+            $this->precision = 0;
         }
         return $this;
     }
@@ -184,8 +191,8 @@ class Ranger
             }
         }
 
-        if ($best_match == self::SECOND) {
-            // the given dates are identical (for all pratical purposes)
+        if ($best_match >= $this->precision) {
+            // the given dates are identical for the requested rendering
             return $left;
         }
 
@@ -394,6 +401,7 @@ class Ranger
     {
         if ($part['content'] !== '') {
             $this->pattern_mask[] = $part;
+            $this->precision = max($this->precision, $part['content']);
         }
     }
 }
