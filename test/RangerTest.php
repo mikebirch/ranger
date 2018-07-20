@@ -154,4 +154,14 @@ class RangerTest extends PHPUnit_Framework_TestCase
         date_default_timezone_set($backup);
         $this->assertEquals('09.03.2016, 00:00 – 01:00', $formatted);
     }
+
+    public function testNoDate()
+    {
+        $ranger = new Ranger('en');
+        $ranger
+            ->setDateType(IntlDateFormatter::NONE)
+            ->setTimeType(IntlDateFormatter::SHORT);
+            $formatted = $ranger->format('2013-10-05 10:00:00', '2013-10-05 13:30:00');
+        $this->assertEquals('10:00 AM - 1:30 PM', $formatted);
+    }
 }
