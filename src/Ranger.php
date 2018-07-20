@@ -310,6 +310,11 @@ class Ranger
      */
     private function find_best_match(DateTime $start, DateTime $end)
     {
+        // ignore the date if it's not output
+        if ($this->date_type === IntlDateFormatter::NONE) {
+            $end->setDate($start->format('Y'), $start->format('m'), $start->format('d'));
+        }
+
         $best_match = -2;
         if ($start->format('Y') !== $end->format('Y')) {
             $best_match = self::TIMEZONE;
@@ -329,18 +334,6 @@ class Ranger
             $best_match = self::AM;
         } else {
             $best_match = self::SECOND;
-        }
-
-        // for edge cases where the date differs but is suppressed
-        if ($this->date_type === IntlDateFormatter::NONE 
-            && $best_match < self::DAY) {
-                // redo the am/pm test
-                if ($start->format('a') !== $end->format('a')) {
-                    $best_match = self::DAY;
-                }
-                else {
-                    $best_match = self::AM;
-                }
         }
 
         //set to same time to avoid DST problems
