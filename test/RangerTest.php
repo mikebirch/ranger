@@ -161,7 +161,7 @@ class RangerTest extends PHPUnit_Framework_TestCase
         $ranger
             ->setDateType(IntlDateFormatter::NONE)
             ->setTimeType(IntlDateFormatter::SHORT);
-            $formatted = $ranger->format('2013-10-05 10:00:00', '2013-10-05 13:30:00');
-        $this->assertEquals('10:00 AM - 1:30 PM', $formatted);
+        $formatted = $ranger->format('2013-10-05 10:00:00', '2013-10-05 13:30:00');
+        $this->assertEquals('10:00 AM – 1:30 PM', $formatted);
     }
 }

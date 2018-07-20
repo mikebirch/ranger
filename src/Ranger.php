@@ -268,12 +268,18 @@ class Ranger
     {
         $tokens = [];
 
-        $intl = new IntlDateFormatter($this->locale, $this->date_type, IntlDateFormatter::NONE, $date->getTimezone()->getName());
-        $formatted = $intl->format((int) $date->format('U'));
+        $formatted = "";
+        if ($this->date_type !== IntlDateFormatter::NONE) {
+            $intl = new IntlDateFormatter($this->locale, $this->date_type, IntlDateFormatter::NONE, $date->getTimezone()->getName());
+            $formatted .= $intl->format((int) $date->format('U'));
+            if ($this->time_type !== IntlDateFormatter::NONE) {
+                $formatted .= $this->date_time_separator;
+            }
+        }
 
         if ($this->time_type !== IntlDateFormatter::NONE) {
             $intl = new IntlDateFormatter($this->locale, IntlDateFormatter::NONE, $this->time_type, $date->getTimezone()->getName());
-            $formatted .= $this->date_time_separator . $intl->format((int) $date->format('U'));
+            $formatted .= $intl->format((int) $date->format('U'));
         }
 
         $type = null;
@@ -342,12 +348,18 @@ class Ranger
             return;
         }
 
-        $intl = new IntlDateFormatter($this->locale, $this->date_type, IntlDateFormatter::NONE);
-        $pattern = $intl->getPattern();
+        $pattern = "";
+        if ($this->date_type !== IntlDateFormatter::NONE) {
+            $intl = new IntlDateFormatter($this->locale, $this->date_type, IntlDateFormatter::NONE);
+            $pattern .= $intl->getPattern();
+            if ($this->time_type !== IntlDateFormatter::NONE) {
+                $pattern .= "'" . $this->date_time_separator . "'";
+            }
+        }
 
         if ($this->time_type !== IntlDateFormatter::NONE) {
             $intl = new IntlDateFormatter($this->locale, IntlDateFormatter::NONE, $this->time_type);
-            $pattern .= "'" . $this->date_time_separator . "'" . $intl->getPattern();
+            $pattern .= $intl->getPattern();
         }
 
         $esc_active = false;
