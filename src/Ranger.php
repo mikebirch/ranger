@@ -331,6 +331,18 @@ class Ranger
             $best_match = self::SECOND;
         }
 
+        // for edge cases where the date differs but is suppressed
+        if ($this->date_type === IntlDateFormatter::NONE 
+            && $best_match < self::DAY) {
+                // redo the am/pm test
+                if ($start->format('a') !== $end->format('a')) {
+                    $best_match = self::DAY;
+                }
+                else {
+                    $best_match = self::AM;
+                }
+        }
+
         //set to same time to avoid DST problems
         $tz_end = clone $end;
         $tz_end->setTimestamp((int) $start->format('U'));
@@ -339,6 +351,7 @@ class Ranger
                 && $best_match < self::DAY)) {
             $best_match = -2;
         }
+
         return $best_match;
     }
 

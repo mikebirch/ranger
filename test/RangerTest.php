@@ -155,13 +155,28 @@ class RangerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('09.03.2016, 00:00 – 01:00', $formatted);
     }
 
-    public function testNoDate()
+    /**
+     * @dataProvider providerNoDate
+     */
+    public function testNoDate($language, $start, $end, $expected)
     {
-        $ranger = new Ranger('en');
-        $ranger
+        $formatter = new Ranger($language);
+        $formatter
             ->setDateType(IntlDateFormatter::NONE)
             ->setTimeType(IntlDateFormatter::SHORT);
-        $formatted = $ranger->format('2013-10-05 10:00:00', '2013-10-05 13:30:00');
-        $this->assertEquals('10:00 AM – 1:30 PM', $formatted);
+        $this->assertEquals($expected, $formatter->format($start, $end));
     }
+
+    public function providerNoDate()
+    {
+        return [
+            ['en', '2013-10-05 10:00:00', '2013-10-05 13:30:00', '10:00 AM – 1:30 PM'],
+            ['en', '2013-10-05 12:20:00', '2013-10-05 13:30:00', '12:20 – 1:30 PM'],
+            ['en', '12:20:00', '13:30:00', '12:20 – 1:30 PM'],
+            // get a little weird
+            ['en', '2013-10-05 12:20:00', '2013-10-07 13:30:00', '12:20 – 1:30 PM'],
+            ['en', '2012-06-05 10:20:00', '2013-10-07 13:30:00', '10:20 AM – 1:30 PM'], 
+        ];
+    }
+
 }
