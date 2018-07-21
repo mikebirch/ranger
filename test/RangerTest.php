@@ -194,4 +194,19 @@ class RangerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('Jan 10–17, 2012', $formatted);
     }
 
+    public function testNoMutation2() 
+    {
+        // checks same as above but a different approach
+        $start = new \DateTime('2012-01-10 10:00:00');
+        $end = new \DateTime('2012-01-17 11:00:00');
+        $r = new Ranger('en');
+        $r->setDateType(\IntlDateFormatter::MEDIUM);
+        $v1 = $r->format($start, $end);
+        $r->setDateType(\IntlDateFormatter::NONE);
+        $r->format($start, $end);
+        $r->setDateType(\IntlDateFormatter::MEDIUM);
+        $v2 = $r->format($start, $end);
+        $this->assertEquals($v1, $v2);
+    }
+
 }
