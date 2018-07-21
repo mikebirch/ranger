@@ -179,4 +179,19 @@ class RangerTest extends PHPUnit_Framework_TestCase
         ];
     }
 
+    public function testNoMutation() 
+    {
+        // changing formats should not change the stored dates
+        $start = new \DateTime('2012-01-10 10:00:00');
+        $end = new \DateTime('2012-01-17 11:00:00');
+        $r = new Ranger('en');
+        $r->setDateType(\IntlDateFormatter::NONE);
+        $r->setTimeType(\IntlDateFormatter::SHORT);
+        $r->format($start, $end);
+        $r->setDateType(\IntlDateFormatter::MEDIUM);
+        $r->setTimeType(\IntlDateFormatter::NONE);
+        $formatted = $r->format($start, $end);
+        $this->assertEquals('Jan 10–17, 2012', $formatted);
+    }
+
 }
