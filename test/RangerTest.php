@@ -157,8 +157,13 @@ class RangerTest extends PHPUnit_Framework_TestCase
 
     public function testOffsetTimezone()
     {
+        if (PHP_MAJOR_VERSION < 7) {
+            $this->markTestSkipped("Timezone offsets not supported in PHP5");
+        }
         $backup = date_default_timezone_get();
-        date_default_timezone_set('UTC');
+        if (!date_default_timezone_set('UTC')) {
+            $this->markTestSkipped("Couldn't set timezone");
+        }
         $start = new DateTime('2013-10-05');
         $end = new DateTime('2013-10-20');
         $tz = new \DateTimeZone('-0500');
