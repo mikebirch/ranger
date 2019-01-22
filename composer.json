@@ -14,6 +14,9 @@
         "php": ">=5.5.0",
         "symfony/intl": "~2.6|~3.4|~4.0"
     },
+    "suggest": {
+        "ext-intl": "Needed for usage with other locales than 'en'"
+    },
     "autoload": {
         "psr-4": { "OpenPsa\\Ranger\\": "src/" }
     }
