@@ -28,6 +28,9 @@ class Ranger
     const TIMEZONE = -1;
     const NO_MATCH = -2;
 
+    /**
+     * @var array
+     */
     private $pattern_characters = [
         'G' => self::ERA,
         'y' => self::YEAR,
@@ -116,7 +119,7 @@ class Ranger
     }
 
     /**
-     * @param int $type
+     * @param int $type One of the IntlDateFormatter constants
      * @return self
      */
     public function setDateType($type)
@@ -130,7 +133,7 @@ class Ranger
     }
 
     /**
-     * @param int $type
+     * @param int $type One of the IntlDateFormatter constants
      * @return self
      */
     public function setTimeType($type)
@@ -247,6 +250,7 @@ class Ranger
 
     /**
      * @param int $best_match
+     * @return string
      */
     private function get_range_separator($best_match)
     {
@@ -377,10 +381,10 @@ class Ranger
         $esc_active = false;
         $part = ['content' => '', 'delimiter' => false];
         foreach (str_split($pattern) as $char) {
-            //@todo the esc char handling is untested
             if ($char == $this->escape_character) {
                 if ($esc_active) {
                     $esc_active = false;
+                    // @todo the esc char handling is untested
                     if ($part['content'] === '') {
                         //Literal '
                         $part['content'] = $char;
