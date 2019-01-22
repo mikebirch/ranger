@@ -275,7 +275,7 @@ class Ranger
         }
 
         if ($this->date_type !== IntlDateFormatter::NONE) {
-            $intl = new IntlDateFormatter($this->locale, $this->date_type, IntlDateFormatter::NONE, $date->getTimezone()->getName());
+            $intl = new IntlDateFormatter($this->locale, $this->date_type, IntlDateFormatter::NONE, $date->getTimezone());
             $formatted .= $intl->format((int) $date->format('U'));
             if ($this->time_type !== IntlDateFormatter::NONE) {
                 $formatted .= $this->date_time_separator;
@@ -283,7 +283,7 @@ class Ranger
         }
 
         if ($this->time_type !== IntlDateFormatter::NONE) {
-            $intl = new IntlDateFormatter($this->locale, IntlDateFormatter::NONE, $this->time_type, $date->getTimezone()->getName());
+            $intl = new IntlDateFormatter($this->locale, IntlDateFormatter::NONE, $this->time_type, $date->getTimezone());
             $formatted .= $intl->format((int) $date->format('U'));
         }
 
