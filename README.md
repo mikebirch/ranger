@@ -4,6 +4,7 @@ Ranger is a formatter for date and time ranges, based (somewhat loosely) on Adam
 ## Some Examples
 
 ```php
+<?php
 use OpenPsa\Ranger\Ranger;
 
 $ranger = new Ranger('en');
@@ -39,6 +40,7 @@ Instantiate ranger with the name of your locale as the parameter. You can also p
 ### Output Customization
 
 ```php
+<?php
 use OpenPsa\Ranger\Ranger;
 use IntlDateFormatter;
 
