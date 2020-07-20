@@ -389,13 +389,12 @@ class Ranger
                         //Literal '
                         $part['content'] = $char;
                     }
-
-                    $this->push_to_mask($part);
-                    $part = ['content' => '', 'delimiter' => false];
                 } else {
                     $esc_active = true;
-                    $this->push_to_mask($part);
-                    $part = ['content' => '', 'delimiter' => true];
+                    if (!$part['delimiter']) {
+                        $this->push_to_mask($part);
+                        $part = ['content' => '', 'delimiter' => true];
+                    }
                 }
             } elseif ($esc_active) {
                 $part['content'] .= $char;

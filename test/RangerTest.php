@@ -196,11 +196,11 @@ class RangerTest extends PHPUnit_Framework_TestCase
             ['en', '12:20:00', '13:30:00', '12:20 – 1:30 PM'],
             // get a little weird
             ['en', '2013-10-05 12:20:00', '2013-10-07 13:30:00', '12:20 – 1:30 PM'],
-            ['en', '2012-06-05 10:20:00', '2013-10-07 13:30:00', '10:20 AM – 1:30 PM'], 
+            ['en', '2012-06-05 10:20:00', '2013-10-07 13:30:00', '10:20 AM – 1:30 PM'],
         ];
     }
 
-    public function testNoMutation() 
+    public function testNoMutation()
     {
         // changing formats should not change the stored dates
         $start = new \DateTime('2012-01-10 10:00:00');
@@ -215,7 +215,7 @@ class RangerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('Jan 10–17, 2012', $formatted);
     }
 
-    public function testNoMutation2() 
+    public function testNoMutation2()
     {
         // checks same as above but a different approach
         $start = new \DateTime('2012-01-10 10:00:00');
@@ -230,4 +230,11 @@ class RangerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($v1, $v2);
     }
 
+    public function testIssue4()
+    {
+        $r = new Ranger('es');
+        $r->setDateType(\IntlDateFormatter::LONG);
+        $result = $r->format('2020-12-03', '2020-12-04');
+        $this->assertEquals('3 – 4 de diciembre de 2020', $result);
+    }
 }
