@@ -1,4 +1,4 @@
-name: PHP Composer
+name: PHPUnit
 
 on:
   push:
@@ -9,13 +9,31 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: Ubuntu-20.04
+    
+    env:
+      extensions: intl
+
+    strategy:
+      matrix:
+        include:
+          - php: '7.2'
+          - php: '8.0'
+          - php: '7.4'
+          - php: '8.0'
+      fail-fast: false
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout
+      uses: actions/checkout@v2
 
-    - name: Validate composer.json and composer.lock
-      run: composer validate --strict
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        coverage: "none"
+        ini-values: date.timezone=Europe/Berlin
+        php-version: "${{ matrix.php }}"
+        extensions: "${{ env.extensions }}"
 
     - name: Cache Composer packages
       id: composer-cache
