@@ -1,4 +1,4 @@
-# Ranger [![Build Status](https://travis-ci.org/flack/ranger.svg?branch=master)](https://travis-ci.org/flack/ranger)
+# Ranger
 Ranger is a formatter for date and time ranges, based (somewhat loosely) on Adam Shaw's `formatRange` algorithm in [fullCalendar](https://github.com/fullcalendar/fullcalendar).
 
 ## Some Examples
@@ -30,7 +30,7 @@ echo $ranger->format('2013-10-05', '2013-11-20');
 
 To use Ranger in any other locale than `"en"`, you will need to have the [`php-intl`](http://php.net/manual/en/book.intl.php) extension installed.
 
-Instantiate ranger with the name of your locale as the parameter. You can also pass `null` to use the `ini.default_locale` setting. Afterwards, you can call `format()` with two date parameters. Accepted types are 
+Instantiate ranger with the name of your locale as the parameter. You can also pass `null` to use the `ini.default_locale` setting. Afterwards, you can call `format()` with two date parameters. Accepted types are
 
  - `DateTime` objects
  - strings (any format that `DateTime` can read)
