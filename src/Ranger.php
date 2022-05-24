@@ -428,7 +428,9 @@ class Ranger
     {
         if ($part['content'] !== '') {
             $this->pattern_mask[] = $part;
-            $this->precision = max($this->precision, $part['content']);
+            if (!$part['delimiter']) {
+                $this->precision = max($this->precision, $part['content']);
+            }
         }
     }
 }
