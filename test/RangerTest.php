@@ -245,4 +245,14 @@ class RangerTest extends PHPUnit_Framework_TestCase
         $result = $r->format('2022-05-04 20:00:00', '2022-05-04 20:00:00');
         $this->assertEquals('04.05.2022, 20:00', $result);
     }
+
+    public function testIssue9()
+    {
+        $r = new Ranger('en');
+        // $r->setTimeType(IntlDateFormatter::SHORT);
+        $from = "1662336000";
+        $to = "1662940800";
+        $result = $r->format($from, $to);
+        $this->assertEquals('Sep 5–12, 2022', $result);
+    }
 }
