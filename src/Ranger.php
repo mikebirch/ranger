@@ -236,7 +236,7 @@ class Ranger
         }
         if (is_numeric($input)) {
             $date = new Datetime;
-            $date->setTimestamp($input);
+            $date->setTimestamp(intval($input));
             return $date;
         }
         if (is_string($input)) {
