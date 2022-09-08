@@ -7,11 +7,11 @@
 
 namespace OpenPsa\Ranger;
 
-use PHPUnit_Framework_TestCase;
 use IntlDateFormatter;
 use DateTime;
+use PHPUnit\Framework\TestCase;
 
-class RangerTest extends PHPUnit_Framework_TestCase
+class RangerTest extends TestCase
 {
     /**
      * @dataProvider providerDateRange

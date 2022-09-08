@@ -110,10 +110,9 @@ class Ranger
     private $time_type = IntlDateFormatter::NONE;
 
     /**
-     *
      * @param string $locale
      */
-    public function __construct($locale)
+    public function __construct(string $locale)
     {
         $this->locale = $locale;
     }
@@ -122,7 +121,7 @@ class Ranger
      * @param int $type One of the IntlDateFormatter constants
      * @return self
      */
-    public function setDateType($type)
+    public function setDateType(int $type)
     {
         if ($type !== $this->date_type) {
             $this->date_type = $type;
@@ -136,7 +135,7 @@ class Ranger
      * @param int $type One of the IntlDateFormatter constants
      * @return self
      */
-    public function setTimeType($type)
+    public function setTimeType(int $type)
     {
         if ($type !== $this->time_type) {
             $this->time_type = $type;
@@ -150,7 +149,7 @@ class Ranger
      * @param string $separator
      * @return self
      */
-    public function setRangeSeparator($separator)
+    public function setRangeSeparator(string $separator)
     {
         $this->range_separator = $separator;
         return $this;
@@ -160,7 +159,7 @@ class Ranger
      * @param string $separator
      * @return self
      */
-    public function setDateTimeSeparator($separator)
+    public function setDateTimeSeparator(string $separator)
     {
         $this->date_time_separator = $separator;
         return $this;
@@ -172,7 +171,7 @@ class Ranger
      * @param mixed $end
      * @return string
      */
-    public function format($start, $end)
+    public function format($start, $end) : string
     {
         $start = $this->prepare_date($start);
         $end = $this->prepare_date($end);
@@ -227,9 +226,9 @@ class Ranger
     /**
      * @param mixed $input
      * @throws InvalidArgumentException
-     * @return \DateTime
+     * @return DateTime
      */
-    private function prepare_date($input)
+    private function prepare_date($input) : DateTime
     {
         if ($input instanceof DateTime) {
             return $input;
@@ -252,7 +251,7 @@ class Ranger
      * @param int $best_match
      * @return string
      */
-    private function get_range_separator($best_match)
+    private function get_range_separator(int $best_match) : string
     {
         $intl = new IntlDateFormatter($this->locale, $this->date_type, $this->time_type);
 
@@ -270,7 +269,7 @@ class Ranger
      * @param DateTime $date
      * @return array
      */
-    private function tokenize(DateTime $date)
+    private function tokenize(DateTime $date) : array
     {
         $tokens = [];
 
@@ -314,12 +313,11 @@ class Ranger
     }
 
     /**
-     *
      * @param DateTime $start
      * @param DateTime $end
      * @return int
      */
-    private function find_best_match(DateTime $start, DateTime $end)
+    private function find_best_match(DateTime $start, DateTime $end) : int
     {
         // make a copy of end because we might change pieces of it
         $end_copy = clone $end;
