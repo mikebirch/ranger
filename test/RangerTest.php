@@ -9,6 +9,7 @@ namespace OpenPsa\Ranger;
 
 use IntlDateFormatter;
 use DateTime;
+use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
 class RangerTest extends TestCase
@@ -130,6 +131,16 @@ class RangerTest extends TestCase
         $ranger = new Ranger('en');
         $start = new DateTime('2013-10-05');
         $end = new DateTime('2013-10-20');
+
+        $formatted = $ranger->format($start, $end);
+        $this->assertEquals('Oct 5–20, 2013', $formatted);
+    }
+
+    public function testDateTimeImmutable()
+    {
+        $ranger = new Ranger('en');
+        $start = new DateTimeImmutable('2013-10-05');
+        $end = new DateTimeImmutable('2013-10-20');
 
         $formatted = $ranger->format($start, $end);
         $this->assertEquals('Oct 5–20, 2013', $formatted);
