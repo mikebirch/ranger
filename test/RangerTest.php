@@ -9,6 +9,7 @@ namespace OpenPsa\Ranger;
 
 use IntlDateFormatter;
 use DateTime;
+use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
 class RangerTest extends TestCase
@@ -22,7 +23,7 @@ class RangerTest extends TestCase
         $this->assertEquals($expected, $formatter->format($start, $end));
     }
 
-    public function providerDateRange()
+    public static function providerDateRange()
     {
         return [
             ['en', '2013-10-05', '2013-10-20', 'Oct 5–20, 2013'],
@@ -44,7 +45,7 @@ class RangerTest extends TestCase
         $this->assertEquals($expected, $formatter->format($start, $end));
     }
 
-    public function providerDateTimeRange()
+    public static function providerDateTimeRange()
     {
         return [
             ['en', '2013-10-05 01:01:01', '2013-10-20 00:00:00', 'Oct 5, 2013, 1:01 AM – Oct 20, 2013, 12:00 AM'],
@@ -64,7 +65,7 @@ class RangerTest extends TestCase
         $this->assertEquals($expected, $formatter->format($start, $end));
     }
 
-    public function providerFullDateRange()
+    public static function providerFullDateRange()
     {
         return [
             ['en', '2013-10-05', '2013-10-20', 'Saturday, October 5 – Sunday, October 20, 2013'],
@@ -86,7 +87,7 @@ class RangerTest extends TestCase
         $this->assertEquals($expected, $formatter->format($start, $end));
     }
 
-    public function providerShortDateRange()
+    public static function providerShortDateRange()
     {
         return [
             ['en', '2012-10-05', '2013-10-20', '10/5/12 – 10/20/13'],
@@ -130,6 +131,16 @@ class RangerTest extends TestCase
         $ranger = new Ranger('en');
         $start = new DateTime('2013-10-05');
         $end = new DateTime('2013-10-20');
+
+        $formatted = $ranger->format($start, $end);
+        $this->assertEquals('Oct 5–20, 2013', $formatted);
+    }
+
+    public function testDateTimeImmutable()
+    {
+        $ranger = new Ranger('en');
+        $start = new DateTimeImmutable('2013-10-05');
+        $end = new DateTimeImmutable('2013-10-20');
 
         $formatted = $ranger->format($start, $end);
         $this->assertEquals('Oct 5–20, 2013', $formatted);
@@ -188,7 +199,7 @@ class RangerTest extends TestCase
         $this->assertEquals($expected, $formatter->format($start, $end));
     }
 
-    public function providerNoDate()
+    public static function providerNoDate()
     {
         return [
             ['en', '2013-10-05 10:00:00', '2013-10-05 13:30:00', '10:00 AM – 1:30 PM'],

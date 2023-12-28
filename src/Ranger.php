@@ -9,6 +9,7 @@ namespace OpenPsa\Ranger;
 
 use IntlDateFormatter;
 use DateTime;
+use DateTimeImmutable;
 use RuntimeException;
 use InvalidArgumentException;
 use OpenPsa\Ranger\Provider\DefaultProvider;
@@ -232,6 +233,11 @@ class Ranger
     {
         if ($input instanceof DateTime) {
             return $input;
+        }
+        if ($input instanceof DateTimeImmutable) {
+            $date = new DateTime('@' . $input->getTimestamp());
+            $date->setTimezone($input->getTimezone());
+            return $date;
         }
         if (is_numeric($input)) {
             $date = new Datetime;
