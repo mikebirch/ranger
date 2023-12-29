@@ -45,11 +45,20 @@ class RangerTest extends TestCase
         $this->assertEquals($expected, $formatter->format($start, $end));
     }
 
+    private static function get_space() : string
+    {
+        if (version_compare(INTL_ICU_VERSION, '72.1', '<')) {
+            return ' '; // Space (U+0020)
+        }
+        return ' '; // Narrow non-breaking space (U+202F)
+    }
+
     public static function providerDateTimeRange()
     {
+        $space = self::get_space();
         return [
-            ['en', '2013-10-05 01:01:01', '2013-10-20 00:00:00', 'Oct 5, 2013, 1:01 AM – Oct 20, 2013, 12:00 AM'],
-            ['en', '2013-10-05 10:00:01', '2013-10-05 13:30:00', 'Oct 5, 2013, 10:00 AM – 1:30 PM'],
+            ['en', '2013-10-05 01:01:01', '2013-10-20 00:00:00', 'Oct 5, 2013, 1:01' . $space . 'AM – Oct 20, 2013, 12:00' . $space . 'AM'],
+            ['en', '2013-10-05 10:00:01', '2013-10-05 13:30:00', 'Oct 5, 2013, 10:00' . $space . 'AM – 1:30' . $space . 'PM'],
             ['de', '2013-10-05 01:01:01', '2013-10-20 00:00:00', '05.10.2013, 01:01 – 20.10.2013, 00:00'],
             ['de', '2013-10-05 10:00:01', '2013-10-05 13:30:00', '05.10.2013, 10:00 – 13:30'],
         ];
@@ -110,7 +119,8 @@ class RangerTest extends TestCase
             ->setTimeType(IntlDateFormatter::SHORT);
 
         $formatted = $ranger->format('2013-10-05 10:00:01', '2013-10-05 13:30:00');
-        $this->assertEquals('October 5, 2013: 10:00 AM -- 1:30 PM', $formatted);
+        $space = self::get_space();
+        $this->assertEquals('October 5, 2013: 10:00' . $space . 'AM -- 1:30' . $space . 'PM', $formatted);
     }
 
     public function testEscapeCharParsing()
@@ -123,7 +133,8 @@ class RangerTest extends TestCase
             ->setTimeType(IntlDateFormatter::SHORT);
 
         $formatted = $ranger->format('2013-10-05 10:00:01', '2013-10-05 13:30:00');
-        $this->assertEquals('October 5, 2013, between 10:00 AM and 1:30 PM', $formatted);
+        $space = self::get_space();
+        $this->assertEquals('October 5, 2013, between 10:00' . $space . 'AM and 1:30' . $space . 'PM', $formatted);
     }
 
     public function testDateTime()
@@ -184,7 +195,8 @@ class RangerTest extends TestCase
         $ranger->setTimeType(IntlDateFormatter::SHORT);
         $formatted = $ranger->format($start, $end);
         date_default_timezone_set($backup);
-        $this->assertEquals('Oct 4, 2013, 7:00 PM – Oct 19, 2013, 7:00 PM', $formatted);
+        $space = self::get_space();
+        $this->assertEquals('Oct 4, 2013, 7:00' . $space . 'PM – Oct 19, 2013, 7:00' . $space . 'PM', $formatted);
     }
 
     /**
@@ -201,13 +213,15 @@ class RangerTest extends TestCase
 
     public static function providerNoDate()
     {
+        $space = self::get_space();
+
         return [
-            ['en', '2013-10-05 10:00:00', '2013-10-05 13:30:00', '10:00 AM – 1:30 PM'],
-            ['en', '2013-10-05 12:20:00', '2013-10-05 13:30:00', '12:20 – 1:30 PM'],
-            ['en', '12:20:00', '13:30:00', '12:20 – 1:30 PM'],
+            ['en', '2013-10-05 10:00:00', '2013-10-05 13:30:00', '10:00' . $space . 'AM – 1:30' . $space . 'PM'],
+            ['en', '2013-10-05 12:20:00', '2013-10-05 13:30:00', '12:20 – 1:30' . $space . 'PM'],
+            ['en', '12:20:00', '13:30:00', '12:20 – 1:30' . $space . 'PM'],
             // get a little weird
-            ['en', '2013-10-05 12:20:00', '2013-10-07 13:30:00', '12:20 – 1:30 PM'],
-            ['en', '2012-06-05 10:20:00', '2013-10-07 13:30:00', '10:20 AM – 1:30 PM'],
+            ['en', '2013-10-05 12:20:00', '2013-10-07 13:30:00', '12:20 – 1:30' . $space . 'PM'],
+            ['en', '2012-06-05 10:20:00', '2013-10-07 13:30:00', '10:20' . $space . 'AM – 1:30' . $space . 'PM'],
         ];
     }
 
