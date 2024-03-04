@@ -286,6 +286,12 @@ class RangerTest extends TestCase
         $r
             ->setDateType(IntlDateFormatter::MEDIUM)
             ->setTimeType(IntlDateFormatter::SHORT);
-        $this->assertEquals('2024年3月29日, 晚上7:00', $r->format(1711738800, 1711738800));
+
+        if (version_compare(INTL_ICU_VERSION, '72.1', '<')) {
+            $day_period = '下午';
+        } else {
+            $day_period = '晚上';
+        }
+        $this->assertEquals('2024年3月29日, ' . $day_period . '7:00', $r->format(1711738800, 1711738800));
     }
 }
