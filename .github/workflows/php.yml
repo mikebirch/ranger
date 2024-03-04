@@ -12,7 +12,7 @@ jobs:
     runs-on: Ubuntu-20.04
 
     env:
-      extensions: intl, mbstring
+      extensions: intl
 
     strategy:
       matrix:
