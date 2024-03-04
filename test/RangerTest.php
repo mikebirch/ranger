@@ -279,4 +279,14 @@ class RangerTest extends TestCase
         $this->assertEquals('Sep 5–12, 2022', $r->format("1662336000", "1662940800"));
         $this->assertEquals('Sep 5–12, 2022', $r->format("1662336000.5", "1662940800.5"));
     }
+
+    public function testIssue14()
+    {
+        error_reporting(-1);
+        $r = new Ranger('zh_TW');
+        $r
+            ->setDateType(IntlDateFormatter::MEDIUM)
+            ->setTimeType(IntlDateFormatter::SHORT);
+        $this->assertEquals('2024年3月29日, 晚上7:00', $r->format(1711738800, 1711738800));
+    }
 }
