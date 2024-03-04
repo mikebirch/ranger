@@ -282,7 +282,6 @@ class RangerTest extends TestCase
 
     public function testIssue14()
     {
-        error_reporting(-1);
         $r = new Ranger('zh_TW');
         $r
             ->setDateType(IntlDateFormatter::MEDIUM)
