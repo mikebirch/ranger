@@ -10,7 +10,6 @@ namespace OpenPsa\Ranger;
 use IntlDateFormatter;
 use DateTime;
 use DateTimeImmutable;
-use RuntimeException;
 use InvalidArgumentException;
 use OpenPsa\Ranger\Provider\DefaultProvider;
 
