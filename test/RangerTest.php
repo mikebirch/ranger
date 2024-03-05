@@ -287,7 +287,7 @@ class RangerTest extends TestCase
             ->setDateType(IntlDateFormatter::MEDIUM)
             ->setTimeType(IntlDateFormatter::SHORT);
 
-        if (version_compare(INTL_ICU_VERSION, '72.1', '<')) {
+        if (version_compare(INTL_ICU_VERSION, '70.1', '<')) {
             $day_period = '下午';
         } else {
             $day_period = '晚上';
