@@ -179,9 +179,6 @@ class RangerTest extends TestCase
 
     public function testOffsetTimezone()
     {
-        if (PHP_MAJOR_VERSION < 7) {
-            $this->markTestSkipped("Timezone offsets not supported in PHP5");
-        }
         $backup = date_default_timezone_get();
         if (!date_default_timezone_set('UTC')) {
             $this->markTestSkipped("Couldn't set timezone");
