@@ -291,4 +291,19 @@ class RangerTest extends TestCase
         }
         $this->assertEquals('2024年3月29日, ' . $day_period . '7:00', $r->format(1711738800, 1711738800));
     }
+
+    public function testIssue15()
+    {
+        $r = new Ranger('zh_TW');
+        $r
+        ->setDateType(IntlDateFormatter::MEDIUM)
+        ->setTimeType(IntlDateFormatter::SHORT);
+
+        if (version_compare(INTL_ICU_VERSION, '70.1', '<')) {
+            $day_period = '下午';
+        } else {
+            $day_period = '晚上';
+        }
+        $this->assertEquals('2024年3月29日, ' . $day_period . '7:00 – 2024年3月30日, ' . $day_period . '8:00', $r->format(1711738800, 1711828800));
+    }
 }
