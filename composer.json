@@ -1,5 +1,5 @@
 {
-    "name": "openpsa/ranger",
+    "name": "mikebirch/ranger",
     "description": "Formatter for date and time ranges with i18n support",
     "keywords": ["date range", "time range"],
     "license": "MIT",
