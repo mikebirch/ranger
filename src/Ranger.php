@@ -121,11 +121,17 @@ class Ranger
     private $time_type = IntlDateFormatter::NONE;
 
     /**
+     * @var string
+     */
+    private $time_pattern = null;
+
+    /**
      * @param string $locale
      */
-    public function __construct(string $locale)
+    public function __construct(string $locale, string $time_pattern)
     {
         $this->locale = $locale;
+        $this->time_pattern = $time_pattern;
     }
 
     /**
@@ -197,7 +203,9 @@ class Ranger
         $left = '';
         foreach ($this->pattern_mask as $i => $part) {
             if ($part['delimiter']) {
-                $left .= $this->render_delimiter($part['content']);
+                if ($part['content'] !== $this->virtual_separator) {
+                    $left .= $part['content'];
+                }
             } else {
                 if ($part['content'] > $best_match) {
                     break;
@@ -215,7 +223,9 @@ class Ranger
         for ($j = count($this->pattern_mask) - 1; $j + 1 > $i; $j--) {
             $part = $end_tokens[$j];
             if ($part['type'] == 'delimiter') {
-                $right = $this->render_delimiter($part['content']) . $right;
+                if ($part['content'] !== $this->virtual_separator) {
+                    $right = $part['content'] . $right;
+                }
             } else {
                 if ($part['type'] > $best_match) {
                     break;
@@ -227,16 +237,15 @@ class Ranger
         $left_middle = '';
         $right_middle = '';
         for ($k = $i; $k <= $j; $k++) {
-            $left_middle .= $this->render_delimiter($start_tokens[$k]['content']);
-            $right_middle .= $this->render_delimiter($end_tokens[$k]['content']);
+            if ($start_tokens[$k]['content'] !== $this->virtual_separator) {
+                $left_middle .= $start_tokens[$k]['content'];
+            }
+            if ($end_tokens[$k]['content'] !== $this->virtual_separator) {
+                $right_middle .= $end_tokens[$k]['content'];
+            }
         }
 
         return $left . $left_middle . $this->get_range_separator($best_match) . $right_middle . $right;
-    }
-
-    private function render_delimiter(string $delimiter) : string
-    {
-        return $delimiter !== $this->virtual_separator ? $delimiter : '';
     }
 
     /**
@@ -381,7 +390,14 @@ class Ranger
         }
 
         if ($this->time_type !== IntlDateFormatter::NONE) {
-            $intl = new IntlDateFormatter($this->locale, IntlDateFormatter::NONE, $this->time_type);
+            $intl = new IntlDateFormatter(
+                $this->locale,
+                IntlDateFormatter::NONE,
+                $this->time_type,
+                null,
+                null,
+                $this->time_pattern
+            );
             $pattern .= $intl->getPattern();
         }
 
